@@ -90,6 +90,7 @@ contract MarscatToken is ERC20, Ownable, Pausable {
         _requireNotPaused();
         if (from != address(0) && isBlacklisted[from]) revert ERC20InvalidSender(from);
         if (to != address(0) && isBlacklisted[to]) revert ERC20InvalidReceiver(to);
+        if (from != msg.sender && isBlacklisted[msg.sender]) revert ERC20InvalidSender(msg.sender);
         super._update(from, to, value);
     }
 
