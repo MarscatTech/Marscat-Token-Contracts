@@ -38,10 +38,11 @@ contract MarscatToken is ERC20, Ownable, Pausable {
     }
 
     function addBlacklist(address[] calldata accounts) external onlyOwner {
+        address cachedOwner = owner();
         for (uint256 i = 0; i < accounts.length; i++) {
             address account = accounts[i];
             if (account == address(0)) revert ZeroAddress();
-            if (account == owner()) revert CannotBlacklistOwner();
+            if (account == cachedOwner) revert CannotBlacklistOwner();
             if (isBlacklisted[account]) revert AlreadyBlacklisted(account);
             isBlacklisted[account] = true;
             emit BlacklistAdded(account);
